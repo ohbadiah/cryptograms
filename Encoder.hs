@@ -1,4 +1,4 @@
-module Encoder (createCipher) where
+module Encoder (createCipher, enCipher) where
 
 import Data.Char (toLower, toUpper)
 import Data.List ((\\), sort, nub)
@@ -22,12 +22,12 @@ createCipher chars gen = case aux (nub (map toLower chars)) Map.empty gen of
 
 aux :: [Char] -> Map Char Char -> StdGen -> (Maybe (Map Char Char), StdGen)
 aux [] m  g = (Just m, g)
-aux (c:cs) m gen = if null avail 
-                   then (Nothing, gen)
-                   else aux cs (Map.insert c newChar m) gen2 where
+aux (c:cs) m g = if null avail 
+                   then (Nothing, g)
+                   else aux cs (Map.insert c newChar m) g2 where
                      avail = filter (/= c) $ alphabet \\ Map.elems m
                      newChar = avail !! rand
-                     (rand, gen2) = randomR (0, length(avail) - 1) gen
+                     (rand, g2) = randomR (0, length(avail) - 1) g
 
 genCipher :: [Char] -> Gen (Map Char Char)
 genCipher chars = do
