@@ -12,6 +12,8 @@ alphabet = ['a' .. 'z']
 
 alphabetUL = ['A' .. 'Z'] ++ alphabet 
 
+-- | Given a list of characters and a random number generator,
+-- generates a map representing a cipher of those characters.
 createCipher :: [Char] -> StdGen -> Map Char Char
 createCipher chars gen = case aux (nub (map toLower chars)) Map.empty gen of
   -- The cipher is created on lower case letters. To map upper case
@@ -47,6 +49,7 @@ propNoSame :: Property
 propNoSame = forAll genAlphaCipher noSame where
   noSame m = Map.empty == fst (Map.partitionWithKey (\k a -> k == a) m)
 
+-- | Encodes the given string according to the given cipher.
 enCipher :: Map Char Char -> String -> String
 enCipher m str = map toCipher str where
   toCipher c = case Map.lookup c m of
