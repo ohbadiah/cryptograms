@@ -3,6 +3,7 @@ module Main (main) where
 import Encoder
 import System.Random
 import System.Environment
+import Data.Set (fromList)
 
 main :: IO ()
 main = do 
@@ -13,4 +14,4 @@ main = do
       fcontents <- readFile infile 
       g <- getStdGen
       writeFile (infile ++ ".ciph") (ec g fcontents) where
-        ec gen str = enCipher (createCipher ['a' .. 'z'] gen) str 
+        ec gen str = enCipher (createCipher (fromList ['a' .. 'z']) gen) str 
